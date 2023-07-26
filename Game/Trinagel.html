@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            min-height: 100vh;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            background-color: #111;
+        }
+        .container{
+            width: 600px;
+            height:400px ;
+            border: 6px solid rgb(197, 205, 39) ;
+            border-radius: 6px;
+            background-color: rgb(189, 139, 74);
+        }
+        .container .contnt{
+            width: 100%;
+            height: 200px;
+            
+           
+        }
+        .container .contnt .intr{
+            padding-bottom: 20px;
+            padding-top: 40px;
+            text-align: left;
+            padding-left: 40px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+        .container .contnt .lblINP {
+            display: flex;
+          
+            width: 100%;
+           
+          
+        }
+        .container .contnt .lblINP  .INP{
+            height: 60px;
+            width: calc(600px/3);
+            
+            margin-top: 20px;
+
+        }
+        .container .contnt .lblINP  .INP input{
+            height: 40px;
+            width: 80px;
+            padding: 4px;
+            padding-left: 3px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 6px;
+
+        }
+        .NOVald{
+            position: absolute;
+            height:20px ;
+            width: 150px;
+            left:300px;
+            padding: 3px;
+            /* margin-top: 20%; */
+            color: white;
+            border: 2px solid rgb(219, 15, 15);
+            background-color: rgb(224, 22, 22);
+/* top: 20%; */
+display: none;
+        }
+        #canvas{
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="contnt">
+            <div class="intr"><span>Inter:</span></div>
+            <div class="lblINP">
+                <div class="INP">
+                    <label for="input">AB:</label>
+                    <input type="" name="" id="AB" class="Point">
+                    px
+                </div>
+                <div class="INP">
+                    <label for="input">AC:</label>
+                    <input type="" name="" id="AC" class="Point">
+                    px
+                </div>
+                <div class="INP">
+                    <label for="input">BC:</label>
+                    <input type="" name="" id="BC" class="Point">
+                    px
+                </div>
+
+            </div>
+            <!-- <button class="Check">Check</button> -->
+            <span class="NOVald">No valid size</span>
+        </div>
+
+        <div>
+            <canvas id="canvas" width="500" height="500"></canvas>
+        </div>
+        <!-- <button class="Check">Check</button> -->
+    </div>
+    <script>
+
+        
+        function clear() {
+            var canvasElement = document.querySelector("#canvas");
+            canvasElement.context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+}
+        // var AB = document.getElementById('AB').textContent;
+        // var BC = document.getElementById('BC').textContent;
+        // var AC = document.getElementById('AC').textContent;
+        let inp= document.querySelectorAll('.Point')
+        const reg = new RegExp('^[0-9]+$');
+       function ChecInp(){
+        for(let i=0;i<inp.length;i++){
+        inp[i].addEventListener('input',(e)=>{
+            if ( reg.test(e.target.value)==false){
+                e.target.value=""
+            }else
+            if(e.target.value>500){
+                e.target.value=""
+            }else
+            if(inp[0].value!="" && inp[1].value!="" && inp[2].value!=""){
+                // clear()
+                CalcZ()
+                DrawTriangle()
+
+            }
+            
+        })
+       }
+       }
+       
+       ChecInp()
+       function calcAngle(adjacent, hypotenuse) {
+  return Math.acos(adjacent / hypotenuse);
+}
+       function CalcZ(){
+        var A=inp[0].value*0.02645833
+        var B=inp[1].value*0.02645833
+        var C=inp[2].value*0.02645833
+
+        A=calcAngle(B,C)
+        // const A = A => A * 180 / Math.PI;
+        console.log(A)
+       }
+       
+       function DrawTriangle(){
+        // clear()
+        // ctx.reset()
+                var AB=inp[0].value
+                var AC=inp[1].value
+                var BC=inp[2].value
+        
+        var A = [0, 0]; 
+                var B = [0, AB];
+                var C = [];
+                
+
+
+
+                // calculate third point
+                C[1] = (AB * AB + AC * AC - BC * BC) / (2 * AB);
+                C[0] = Math.sqrt(AC * AC - C[1] * C[1]);
+                console.log(A, B, C);
+
+                var canvas = document.getElementById('canvas');
+                var ctx = canvas.getContext('2d');
+
+                ctx.beginPath();
+                ctx.moveTo(A[0], A[1]);
+                ctx.lineTo(B[0], B[1]);
+                ctx.lineTo(C[0], C[1]);
+                ctx.fill();
+
+               
+
+             
+
+
+//                 var canvasElement = document.querySelector("#canvas");
+// var ctx = canvasElement.getContext("2d");
+// let cw = (canvasElement.width = 150),
+//   cx = cw / 2;
+// let ch = (canvasElement.height = 150),
+//   cy = ch / 2;
+//   let angleC = Math.acos((BC*BC - AB*AB - AC*AC) / (2*AB*AC) );
+
+//  var triangle = {
+//  //the first vertex is in the center of the canvas
+//  //you can change this.
+//         x1: cx, 
+//         y1: cy, 
+ // the second vertex 
+        // x2: cx + AB, 
+        // y2: cy, 
+ // the 3-rd vertex       
+    //     x3: cx + AC*Math.cos(angleC), 
+    //     y3: cy + AC*Math.sin(angleC),
+    // }
+
+
+
+// ctx.strokeStyle = "red";
+
+// ctx.beginPath();
+// ctx.moveTo(triangle.x1, triangle.y1);
+// ctx.lineTo(triangle.x2, triangle.y2);
+// ctx.lineTo(triangle.x3, triangle.y3);
+// ctx.lineTo(triangle.x1, triangle.y1);
+// ctx.closePath();
+// ctx.stroke();
+        }
+        // document.querySelector('.Check').addEventListener('click',()=>{
+        //     // clear()
+            
+        //     ChecInp()
+
+        // })
+    </script>
+</body>
+</html>
